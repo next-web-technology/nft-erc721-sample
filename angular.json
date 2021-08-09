@@ -27,6 +27,7 @@
               "projects/nft-web-app/src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "projects/nft-web-app/src/styles.css"
             ],
             "scripts": []
@@ -94,6 +95,7 @@
               "projects/nft-web-app/src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "projects/nft-web-app/src/styles.css"
             ],
             "scripts": []
