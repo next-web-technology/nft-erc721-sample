@@ -1,3 +1,4 @@
+require("@nomiclabs/hardhat-etherscan");
 require("@nomiclabs/hardhat-waffle");
 
 // This is a sample Hardhat task. To learn how to create your own go to
@@ -24,4 +25,7 @@ module.exports = {
     }
   },
   solidity: "0.8.4",
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_API_TOKEN
+  },
 };
