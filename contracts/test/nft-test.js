@@ -1,12 +1,13 @@
 const { expect } = require("chai");
 
 describe("NFT", async function () {
+  this.timeout(600 * 1000);
   it("should be able to mint, transferFrom, burn. And it should return name, symbol, totalSupply, tokenURI, ownerOf, balanceOf", async function () {
     const [signer, badSigner] = await ethers.getSigners();
     const NFT = await ethers.getContractFactory("NFT");
     const nft = await NFT.deploy();
     await nft.deployed();
-    console.log(`nft deploy tx hash: ${nft.deployTransaction.hash}`);
+    console.log(`nft deploy tx: https://goerli.etherscan.io/tx/${nft.deployTransaction.hash}`);
     console.log(`greeter contract address: ${nft.address}`);
 
     // before initial minting
@@ -16,8 +17,8 @@ describe("NFT", async function () {
 
     // mint tokenId = 0
     const mint0Tx = await nft.connect(signer).mint(signer.address);
-    await mint0Tx.wait();
-    console.log(`mint 0 tx hash: ${mint0Tx.hash}`);
+    await mint0Tx.wait([confirms = 2]);
+    console.log(`mint 0 tx: https://goerli.etherscan.io/tx/${mint0Tx.hash}`);
 
     // Assertion for token(tokenId = 0)
     expect(await nft.totalSupply()).to.equal(1);
@@ -27,8 +28,8 @@ describe("NFT", async function () {
 
     // mint tokenId = 1
     const mint1Tx = await nft.connect(signer).mint(signer.address);
-    await mint1Tx.wait();
-    console.log(`mint 1 tx hash: ${mint1Tx.hash}`);
+    await mint1Tx.wait([confirms = 2]);
+    console.log(`mint 1 tx: https://goerli.etherscan.io/tx/${mint1Tx.hash}`);
 
     // Assertion for token(tokenId = 1) and contract state
     expect(await nft.totalSupply()).to.equal(2);
@@ -38,8 +39,8 @@ describe("NFT", async function () {
 
     // transfer token(tokenId = 1) from signer.address to badSigner.address
     const transfer1FromSignerToAddressTx = await nft.connect(signer).transferFrom(signer.address, badSigner.address, 1);
-    await transfer1FromSignerToAddressTx.wait();
-    console.log(`transfer1FromSignerToAddressTx tx hash: ${transfer1FromSignerToAddressTx.hash}`);
+    await transfer1FromSignerToAddressTx.wait([confirms = 2]);
+    console.log(`transfer1FromSignerToAddress tx: https://goerli.etherscan.io/tx/${transfer1FromSignerToAddressTx.hash}`);
 
     // Assertion for transfered token(tokenId = 1)
     expect(await nft.totalSupply()).to.equal(2);
@@ -49,8 +50,8 @@ describe("NFT", async function () {
 
     // burn token(tokenId = 0)
     const burn0Tx = await nft.burn(0);
-    await burn0Tx.wait();
-    console.log(`burn0 tx hash: ${burn0Tx.hash}`);
+    await burn0Tx.wait([confirms = 2]);
+    console.log(`burn0 tx: https://goerli.etherscan.io/tx/${burn0Tx.hash}`);
 
     // Assertion for burned token(tokenId = 0)
     expect(await nft.totalSupply()).to.equal(1);
@@ -60,8 +61,8 @@ describe("NFT", async function () {
 
     // mint token(tokenId = 2)
     const mint2Tx = await nft.mint(badSigner.address);
-    await mint2Tx.wait();
-    console.log(`mint 2 tx hash: ${mint2Tx.hash}`);
+    await mint2Tx.wait([confirms = 2]);
+    console.log(`mint 2 tx: https://goerli.etherscan.io/tx/${mint2Tx.hash}`);
 
     // Assertion for re-minted token(tokenId = 0)
     expect(await nft.totalSupply()).to.equal(2);
@@ -71,8 +72,8 @@ describe("NFT", async function () {
 
     // trasfer token(tokenId = 2) from badSigner.address to signer.address
     const transfer2FromBadSignerToSignerAddressTx = await nft.connect(badSigner).transferFrom(badSigner.address, signer.address, 2);
-    await transfer2FromBadSignerToSignerAddressTx.wait();
-    console.log(`transfer2FromBadSignerToSignerAddress tx hash: ${transfer2FromBadSignerToSignerAddressTx.hash}`);
+    await transfer2FromBadSignerToSignerAddressTx.wait([confirms = 2]);
+    console.log(`transfer2FromBadSignerToSignerAddress tx: https://goerli.etherscan.io/tx/${transfer2FromBadSignerToSignerAddressTx.hash}`);
 
     // Assert for trasfered token(tokenId = 2)
     expect(await nft.totalSupply()).to.equal(2);
